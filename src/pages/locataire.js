@@ -1,6 +1,9 @@
+// Importation de la bibliothèque useState
 import { useState } from 'react';
 
+// Composant Locataire
 export default function Locataire() {
+  // Initialisation du state "locataires" avec un tableau d'objets
   const [locataires, setLocataires] = useState([
     {
       nom: 'John Doe',
@@ -17,18 +20,20 @@ export default function Locataire() {
       statutFacture: false,
       montantFacture: '12450',
       dateFinBail: '2022-10-31'
-    },
-    // Ajoutez plus d'objets ici si nécessaire
+    },  
   ]);
 
+  // Fonction pour envoyer un message de facture à un locataire donné
   function sendMessageFacture(index) {
     alert(`Message de facture envoyé à ${locataires[index].nom}`);
   }
 
+  // Fonction pour envoyer un message de bail à un locataire donné
   function sendMessageBail(index) {
     alert(`Message de bail envoyé à ${locataires[index].nom}`);
   }
 
+  // Rendu du composant Locataire
   return (
     <div>
       <h1>Locataires</h1>
