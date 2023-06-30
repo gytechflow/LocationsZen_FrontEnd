@@ -1,0 +1,161 @@
+[
+  {
+    "noms": "Diop",
+    "prenoms": "Fatoumata",
+    "statut": true,
+    "cni": 7890123456,
+    "logement": "Appartement G",
+    "numeroLogement": "G701",
+    "telephone": "+221776543216",
+    "dateDebut": "2021-07-01T00:00:00.000Z",
+    "dateFin": "2022-07-01T00:00:00.000Z",
+    "montantLoyer": 90000,
+    "caution": 180000,
+    "montantTotal": 1080000,
+    "factures": [
+      {
+        "date": "2021-07-01T00:00:00.000Z",
+        "ancienIndex": 1500,
+        "nouveauIndex": 1600
+      },
+      {
+        "date": "2021-08-01T00:00:00.000Z",
+        "ancienIndex": 1600,
+        "nouveauIndex": 1700
+      }
+    ]
+  },
+  
+  {
+    "noms": "Nguyen",
+    "prenoms": "Minh",
+    "statut": false,
+    "cni": 8901234567,
+    "logement": "Studio H",
+    "numeroLogement": "H801",
+    "telephone": "+221776543217",
+    "dateDebut": "2021-09-01T00:00:00.000Z",
+    "dateFin": "2022-09-01T00:00:00.000Z",
+    "montantLoyer": 50000,
+    "caution": 0,
+    "montantTotal": 600000,
+    "factures": [
+      {
+        "date": "2021-09-01T00:00:00.000Z",
+        "ancienIndex": 700,
+        "nouveauIndex": 800
+      },
+      {
+        "date": "2021-10-01T00:00:00.000Z",
+        "ancienIndex": 800,
+        "nouveauIndex": 900
+      }
+    ]
+  },
+  {
+    "noms": "Doe",
+    "prenoms": "John",
+    "statut": true,
+    "cni": 1234567890,
+    "logement": "Appartement A",
+    "numeroLogement": "A101",
+    "telephone": "+221776543210",
+    "dateDebut": "2021-01-01T00:00:00.000Z",
+    "dateFin": "2022-01-01T00:00:00.000Z",
+    "montantLoyer": 50000,
+    "caution": 100000,
+    "montantTotal": 600000,
+    "factures": [
+      {
+        "date": "2021-01-01T00:00:00.000Z",
+        "ancienIndex": 1000,
+        "nouveauIndex": 1100
+      },
+      {
+        "date": "2021-02-01T00:00:00.000Z",
+        "ancienIndex": 1100,
+        "nouveauIndex": 1200
+      }
+    ]
+  },
+  {
+    "noms": "Dupont",
+    "prenoms": "Alice",
+    "statut": true,
+    "cni": 2345678901,
+    "logement": "Studio B",
+    "numeroLogement": "B201",
+    "telephone": "+221776543211",
+    "dateDebut": "2021-05-01T00:00:00.000Z",
+    "dateFin": "2022-05-01T00:00:00.000Z",
+    "montantLoyer": 30000,
+    "caution": 0,
+    "montantTotal": 360000,
+    "factures": [
+      {
+        "date": "2021-06-01T00:00:00.000Z",
+        "ancienIndex": 500,
+        "nouveauIndex": 600
+      },
+      {
+        "date": "2021-07-01T00:00:00.000Z",
+        "ancienIndex": 600,
+        "nouveauIndex": 700
+      }
+    ]
+  },
+  {
+    "noms": "Martin",
+    "prenoms": "Lucie",
+    "statut": false,
+    "cni": 3456789012,
+    "logement": "Appartement C",
+    "numeroLogement": "C301",
+    "telephone": "+221776543212",
+    "dateDebut": "2021-03-01T00:00:00.000Z",
+    "dateFin": "2022-03-01T00:00:00.000Z",
+    "montantLoyer": 60000,
+    "caution": 0,
+    "montantTotal": 720000,
+    "factures": [
+      {
+        "date": "2021-03-01T00:00:00.000Z",
+        "ancienIndex": 800,
+        "nouveauIndex": 900
+      },
+      {
+        "date": "2021-04-01T00:00:00.000Z",
+        "ancienIndex": 900,
+        "nouveauIndex": 1000
+      }
+    ]
+  },
+  {
+    "noms": "Garcia",
+    "prenoms": "Pierre",
+    "statut": true,
+    "cni": 4567890123,
+    "logement": "Studio D",
+    "numeroLogement": "D401",
+    "telephone": "+221776543213",
+    "dateDebut": "2021-02-01T00:00:00.000Z",
+    "dateFin": "2022-02-01T00:00:00.000Z",
+    "montantLoyer": 35000,
+    "caution": 70000,
+    "montantTotal": 420000,
+    "factures": [
+      {
+        "date": "2021-02-01T00:00:00.000Z",
+        "ancienIndex": 300,
+        "nouveauIndex": 400
+      },
+      {
+        "date": "2021-03-01T00:00:00.000Z",
+        "ancienIndex": 400,
+        "nouveauIndex": 500
+      }
+    ]
+  }
+  
+  ]
+  

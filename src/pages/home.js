@@ -1,28 +1,71 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-export default function home(){
-    return (
-        <section className="widgets">
-          <div className="widget">
-            <h2>Nombre de chambre</h2>
-            <p>Total occupe 10.</p>
-          </div>
-          <div className="widget">
-            <h2>Nombre de studio </h2>
-            <p>Total Occupé 10.</p>
-          </div>
-          <div className="widget">
-            <h2>Nombre d'appartement</h2>
-            <p>Total Occupé 10.</p>
-          </div>
-          <div className="widget">
-            <h2>Loyer en retard</h2>
-            <p>10.</p>
-          </div>
-          <div className="widget">
-            <h2>Facture non confirmé</h2>
-            <p>10.</p>
-          </div>
-        </section>
-    );
+export default function Home() {
+  const [locataires, setLocataires] = useState([]);
+
+  useEffect(() => {
+    const fetchLocataires = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/locataire');
+        setLocataires(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchLocataires();
+  }, []);
+
+  const chambres = locataires.filter(locataire => locataire.logement === 'chambre' && locataire.statut);
+  const studios = locataires.filter(locataire => locataire.logement === 'studio' && locataire.statut);
+
+  const loyersEnRetard = locataires.filter(locataire => {
+    const now = new Date();
+    const dateFin = new Date(locataire.dateFin);
+    return dateFin < now ;
+  });
+
+  const facturesNonConfirmees = locataires.filter(locataire => locataire.facture && !locataire.facture.confirme && locataire.statut);
+
+  const deuxMoisAvantDateFin = new Date();
+  deuxMoisAvantDateFin.setMonth(deuxMoisAvantDateFin.getMonth() + 2);
+  const locatairesAvecDateFinDans2Mois = locataires.filter(locataire => {
+    const dateFin = new Date(locataire.dateFin);
+    return dateFin >= new Date() && dateFin <= deuxMoisAvantDateFin;
+  });
+
+  return (
+    <section className="widgets">
+      <div className="widget">
+        <h2>Nombre de locataires</h2>
+        <p>{locataires.length}</p>
+      </div>
+      <div className="widget">
+        <h2>Nombre de chambres occupées</h2>
+        <p>{chambres.length}</p>
+      </div>
+      <div className="widget">
+        <h2>Nombre de studios occupés</h2>
+        <p>{studios.length}</p>
+      </div>
+      <div className="widget">
+        <h2>Loyers en retard</h2>
+        <p>{loyersEnRetard.length}</p>
+      </div>
+      <div className="widget">
+        <h2>Factures non confirmées</h2>
+        <p>{facturesNonConfirmees.length}</p>
+      </div>
+      <div className="widget">
+        <h2>Locataires avec date de fin de bail dans 2 mois</h2>
+        <ul>
+          {locatairesAvecDateFinDans2Mois.map(locataire => (
+            <li key={locataire._id}>
+              {locataire.noms} {locataire.prenoms} - Date de fin: {new Date(locataire.dateFin).toLocaleDateString()}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
 }

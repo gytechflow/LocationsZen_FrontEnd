@@ -1,0 +1,33 @@
+[
+    {
+      "date": "2023-06-19T12:00:00.000Z",
+      "nouvelleIndex": 250,
+      "ancienIndex": 200,
+      "statut": true
+    },
+    {
+      "date": "2023-06-18T12:00:00.000Z",
+      "nouvelleIndex": 125,
+      "ancienIndex": 100,
+      "statut": false
+    },
+    {
+      "date": "2023-06-17T12:00:00.000Z",
+      "nouvelleIndex": 300,
+      "ancienIndex": 250,
+      "statut": true
+    },
+    {
+      "date": "2023-06-16T12:00:00.000Z",
+      "nouvelleIndex": 400,
+      "ancienIndex": 350,
+      "statut": false
+    },
+    {
+      "date": "2023-06-15T12:00:00.000Z",
+      "nouvelleIndex": 600,
+      "ancienIndex": 500,
+      "statut": true
+    }
+  ]
+  

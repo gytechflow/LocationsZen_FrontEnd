@@ -3,45 +3,51 @@ import { useState } from 'react'; // importation de useState pour utiliser les h
 import axios from 'axios';
 
 export default function Contrat() {
-  const [noms, setNoms] = useState(''); // déclaration d'un état nommé "noms" et une fonction pour le mettre à jour nommée "setNoms"
+  const [noms, setNoms] = useState('');
   const [prenoms, setPrenoms] = useState('');
+  const [cni, setCni] = useState('');
+  const [statut] = useState('');
   const [dateDebut, setDateDebut] = useState('');
   const [dateFin, setDateFin] = useState('');
-  const [montantLoyer, setMontantLoyer] = useState(0);
-  const [dureeContrat, setDureeContrat] = useState(0);
-  const [caution, setCaution] = useState(0);
+  const [montantLoyer, setMontantLoyer] = useState();
   const [telephone, setTelephone] = useState('');
-  const [numeroChambre, setNumeroChambre] = useState('');
-  const [newIndex, setNewIndex] = useState('');
+  const [numeroLogement, setNumeroLogement] = useState('');
+  const [logement, setLogement] = useState('');
+  const [nouveauIndex, setNouveauIndex] = useState('');
 
   const handleSubmit = async (event) => { // fonction appelée lors de la soumission du formulaire
     event.preventDefault(); // empêcher le comportement par défaut du formulaire
 
     const nbMois = getNbMois(dateDebut, dateFin); // calculer le nombre de mois entre la date de début et la date de fin
-    const montantTotal = nbMois * montantLoyer; // calculer le montant total en multipliant le nombre de mois par le montant du loyer
-    const cautionTotal = 2 * montantLoyer; // calculer la caution totale en multipliant le montant du loyer par 2
+    const caution = 2 * montantLoyer; // calculer la caution totale en multipliant le montant du loyer par 2
+    const montantTotal = caution + (nbMois * montantLoyer); // calculer le montant total en multipliant le nombre de mois par le montant du loyer
 
     // Envoi des données au serveur API en utilisant Axios
     try {
-      const response = await axios.post('https://example.com/api/contrats', {
+      const response = await axios.post('http://localhost:5000/locataire', {
         noms,
         prenoms,
+        statut,
         dateDebut,
         dateFin,
+        cni,
+        logement,
         montantLoyer,
-        dureeContrat: nbMois,
         caution,
         montantTotal,
-        cautionTotal,
         telephone,
-        numeroChambre,
-        newIndex,
+        numeroLogement,
+        factures: []
       });
 
       // Affichage de la réponse du serveur dans la console
+      console.log('ajouterLocataire');
+      alert('locataire ajouter');
       console.log(response.data);
     } catch (error) {
       // Affichage des erreurs éventuelles dans la console
+      console.log('erreur ajouterLocataire')
+
       console.error(error);
     }
   };
@@ -86,6 +92,39 @@ export default function Contrat() {
         </div>
 
         <div className="form-group">
+          <label htmlFor="prenoms">Cni:</label>
+          <input
+            id="cni"
+            type="text"
+            value={cni}
+            onChange={(event) => setCni(event.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="prenoms">Logement:</label>
+          <input
+            id="logement"
+            type="text"
+            value={logement}
+            onChange={(event) => setLogement(event.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="numeroLogement">Numéro du logement:</label>
+          <input
+            id="numeroChambre"
+            type="text"
+            value={numeroLogement}
+            onChange={(event) => setNumeroLogement(event.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
           <label htmlFor="telephone">Téléphone:</label>
           <input
             id="telephone"
@@ -95,26 +134,14 @@ export default function Contrat() {
             required
           />
         </div>
-
-        <div className="form-group">
-          <label htmlFor="numeroChambre">Numéro de chambre:</label>
-          <input
-            id="numeroChambre"
-            type="text"
-            value={numeroChambre}
-            onChange={(event) => setNumeroChambre(event.target.value)}
-            required
-          />
-        </div>
     
         <div className="form-group">
           <label htmlFor="newIndex">Index du locataire:</label>
           <input
-            id="newIndex"
+            id="nouveauIndex"
             type="number"
-            value={newIndex}
-            onChange={(event) => setNewIndex(event.target.value)}
-            required
+            value={nouveauIndex}
+            onChange={(event) => setNouveauIndex(event.target.value)}
           />
         </div>
     

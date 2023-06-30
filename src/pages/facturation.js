@@ -4,61 +4,65 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 export default function Facturation() {
-  const [data, setData] = useState([
-    {
-      numero_chambre:'T6',
-      locataire: 'John Doe',
-      telephone: '514-555-1234',
-      ancienIndex: 1000,
-      newIndex: null,
-      quantite: null,
-      total: null
-    },
-    {
-      numero_chambre:'T7',
-      locataire: 'Jane Smith',
-      telephone: '514-555-5678',
-      ancienIndex: 2000,
-      newIndex: null,
-      quantite: null,
-      total: null
-    },
-  ]);
+  const [data, setData] = useState([]);
+
   
   const [totalMontant, setTotalMontant] = useState(0);
 
   // Récupérer les données de votre base de données lors du montage du composant
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get('your-api-endpoint');
+      const response = await axios.get('http://localhost:5000/locataire');
       setData(response.data);
     }
     fetchData();
   }, []);
 
-  // Mettre à jour le montant total pour une ligne spécifique lors de la saisie du nouvel index
-  function handleNewIndexChange(row, newIndex) {
-    const oldIndex = row.ancienIndex;
-    const quantity = newIndex - oldIndex;
-    const qwt = 125;
-    const total = (quantity * qwt) + 2000 + 200;
 
-    const updatedRow = { ...row, newIndex, quantite: quantity, total };
+  
+
+  // Mettre à jour le montant total pour une ligne spécifique lors de la saisie du nouvel index
+  function handleNouvelleIndexChange(row, nouvelleIndex) {
+    const ancienIndex = Number(row.factures?.[row.factures.length - 1]?.nouveauIndex); //Force le formatage en nombre
+    const quantite = nouvelleIndex - ancienIndex; //Force le formatage en nombre
+    const qwt = 125;
+    const total = (quantite * qwt) + 2000 + 200;
+
+    const updatedRow = { ...row, nouvelleIndex: Number(nouvelleIndex), quantite, total };
     const updatedData = [...data];
     const rowIndex = updatedData.indexOf(row);
     updatedData[rowIndex] = updatedRow;
     setData(updatedData);
   }
 
-  // Enregistrer les données mises à jour dans la base de données
   async function saveData() {
     try {
-      const response = await axios.post('your-api-endpoint', { data });
-      console.log(response.data); // handle success
+      // Parcourir tous les locataires
+      for (const locataire of data) {
+        
+        const ancienIndex = Number(locataire.factures?.[locataire.factures.length - 1]?.nouveauIndex); // Récupérer le dernier index enregistré comme ancien index de cette facture
+        const date = new Date(); // Récupérer la date actuelle
+        const nouveauIndex = locataire.nouvelleIndex; // Récupérer le nouvel index saisi par l'utilisateur
+        const factureTotal =  locataire.total;
+        // Envoyer une requête POST à l'API pour ajouter une nouvelle cellule de facture pour ce locataire
+        const response = await axios.post(`http://localhost:5000/locataire/${locataire._id}`, { date, ancienIndex, nouveauIndex, factureTotal});
+  
+        // Mettre à jour les données locales avec les données renvoyées par l'API
+        const updatedLocataire = response.data;
+        const updatedData = [...data];
+        const rowIndex = updatedData.findIndex(row => row._id === updatedLocataire._id);
+        updatedData[rowIndex] = updatedLocataire;
+        setData(updatedData);
+      }
     } catch (error) {
-      console.error(error); // gérer l'erreur
+      console.error(`Erreur lors de l'enregistrement des données : ${error.message}`);
     }
   }
+  
+  
+
+
+
 
   // telecharger la page en pdf
   function handleDownload() {
@@ -72,11 +76,11 @@ export default function Facturation() {
   
     data.forEach((row) => {
       let newRow = [
-        row.numero_chambre,
-        row.locataire,
+        row.numeroLogement,
+        row.noms,
         row.telephone,
-        row.ancienIndex,
-        row.newIndex || "",
+        Number(row.factures?.[row.factures.length - 1]?.nouveauIndex), //Force le formatage en nombre
+        Number(row.nouvelleIndex) || "", //Force le formatage en nombre
         row.quantite || "",
         "125",
         "2000",
@@ -86,7 +90,7 @@ export default function Facturation() {
     });
   
     // Ajout de la variable totalMontant à la dernière ligne du tableau
-    dataForPdf.push(["", "", "", "", "", "","","total Facture", totalMontant  ]);
+    dataForPdf.push(["","", "", "", "", "","","total Facture", totalMontant  ]);
   
     doc.autoTable({
       head: [['N°', 'Locataire', 'N° Telephone', 'Ancien Index', 'Nouvel Index', 'Quantité', 'Qwt', 'Gardinage','Total' ]],
@@ -126,40 +130,39 @@ export default function Facturation() {
             <th>Qwt</th>
             <th>Gardinage</th>
             <th>Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            {data.map((row, index) => (
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, index) => (
             <tr key={index}>
-            <td>{row.numero_chambre}</td>
-            <td>{row.locataire}</td>
-            <td>{row.telephone}</td>
-            <td>{row.ancienIndex}</td>
-            <td>
-            <input
-            type="number"
-            value={row.newIndex || ''}
-            onChange={(e) => handleNewIndexChange(row, e.target.value)}
-            />
-            </td>
-            <td>{row.quantite}</td>
-            <td>125</td>
-            <td>2000</td>
-            <td><b>{row.total}</b></td>
-            </tr>
-            ))}
-            </tbody>
-            <tfoot>
-            <tr>
-            <td colSpan="8"> <b> Montant total: </b></td>
-            <td><b>{totalMontant}</b></td>
-            </tr>
-            </tfoot>
-            </table>
-            <div className='fontbouton'>
-              <button onClick={saveData}>Enregistrer</button>
-              <button onClick={handleDownload}>Télécharger en PDF</button>
-            </div>
-            </div>
-);
-}
+              <td>{row.logement} {row.numeroLogement}</td>
+              <td>{row.noms}</td>
+              <td>{row.telephone}</td>
+              <td>{Number(row.factures?.[row.factures.length - 1]?.nouveauIndex)}</td>
+              <td>
+                <input
+                  type="number"
+                  value={row.nouvelleIndex || ''}
+                  onChange={(e) => handleNouvelleIndexChange(row, e.target.value)}
+                  />
+                  </td>
+                  <td>{row.quantite}</td>
+                  <td>125</td>
+                  <td>2000</td>
+                  <td><b>{row.total}</b></td>
+                  </tr>
+                  ))}
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                  <td colSpan="8"> <b> Montant total: </b></td>
+                  <td><b>{totalMontant}</b></td>
+                  </tr>
+                  </tfoot>
+                  </table>
+                  <div className='fontbouton'>
+                    <button onClick={saveData}>Enregistrer</button>
+                    <button onClick={handleDownload}>Télécharger en PDF</button>
+                  </div>
+                  </div>
+      );}
